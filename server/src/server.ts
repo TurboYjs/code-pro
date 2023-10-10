@@ -78,8 +78,8 @@ wss.on('connection', (ws, req) => {
 export const socketIOService = new SocketIOService(httpServer);
 // enter your username and password
 export const mongoDbService = new MongoDBService(dbUser!, dbPassword!);
-httpServer.listen(3000, () => {
+httpServer.listen(4000, () => {
   mongoDbService.disconnect();
   mongoDbService.connect().catch(err => logger.error(err));
-  logger.info("Server listening on port: 3000");
+  logger.info("Server listening on port: 4000");
 });
