@@ -36,12 +36,21 @@ const allowedOrigins = ['https://code-companion.netlify.app', 'https://guxukai.t
  */
 const app = express();
 app.use(cors(
+  //   {
+  //   origin: allowedOrigins,
+  //   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  //   allowedHeaders: "Content-Type",
+  //   credentials: true,
+  // }
     {
-    origin: allowedOrigins,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    allowedHeaders: "Content-Type",
-    // credentials: true
-  }
+        cors: {
+            origin: allowedOrigins,
+            methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "HEAD"],
+            transports: ['websocket', 'polling'],
+            credentials: true
+        },
+        allowEIO3: true
+    } as any
 ));
 app.use(express.json());
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
