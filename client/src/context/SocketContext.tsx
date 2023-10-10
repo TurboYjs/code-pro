@@ -5,7 +5,8 @@ const serverUrl = import.meta.env.VITE_SERVER_URL;
 const SOCKET_URL = new URL(serverUrl).origin;
 
 const socket = io(SOCKET_URL, {
-    transports: ["websocket"]
+    transports: ["websocket"],
+    path: 'socket.io'
 });
 
 export const SocketContext = createContext<Socket>( {} as unknown as Socket );

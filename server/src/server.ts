@@ -25,7 +25,7 @@ const dbPassword: string | undefined = process.env.DB_PASSWORD;
 /**
  * CORSConfiguration
  */
-const allowedOrigins = ['https://code-companion.netlify.app', 'https://guxukai.tech', 'http://localhost:5173'];
+const allowedOrigins = ['https://guxukai.tech', 'http://localhost:5173'];
 
 /**
  * Server INITIALIZATION and CONFIGURATION
@@ -36,21 +36,21 @@ const allowedOrigins = ['https://code-companion.netlify.app', 'https://guxukai.t
  */
 const app = express();
 app.use(cors(
-  //   {
-  //   origin: allowedOrigins,
-  //   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  //   allowedHeaders: "Content-Type",
-  //   credentials: true,
-  // }
     {
-        cors: {
-            origin: allowedOrigins,
-            methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "HEAD"],
-            transports: ['websocket', 'polling'],
-            credentials: true
-        },
-        allowEIO3: true
-    } as any
+    origin: allowedOrigins,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: "Content-Type",
+    credentials: true,
+  }
+  //   {
+  //       cors: {
+  //           origin: allowedOrigins,
+  //           methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "HEAD"],
+  //           transports: ['websocket', 'polling'],
+  //           credentials: true
+  //       },
+  //       allowEIO3: true
+  //   } as any
 ));
 app.use(express.json());
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
@@ -65,7 +65,7 @@ export const httpServer = createServer(app);
 /**
  * Create a wss (Web Socket Secure) server
  */
-export const wss = new WebSocketServer({server: httpServer, path: 'websocket'})
+export const wss = new WebSocketServer({server: httpServer})
 
 function onError(error: any) {
   logger.info(error);
