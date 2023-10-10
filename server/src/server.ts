@@ -37,10 +37,17 @@ const allowedOrigins = ['https://code-companion.netlify.app', 'https://guxukai.t
 const app = express();
 app.use(cors(
   {
-    origin: allowedOrigins,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    allowedHeaders: "Content-Type",
-    credentials: true
+    // origin: allowedOrigins,
+    // methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    // allowedHeaders: "Content-Type",
+    // credentials: true
+    //   cors: {
+    //       origin: ['http://localhost:5001','https://guxukai.tech'],
+    //       methods: ["GET", "POST"],
+    //       transports: ['websocket', 'polling'],
+    //       credentials: true
+    //   },
+    //   allowEIO3: true
   }
 ));
 app.use(express.json());
