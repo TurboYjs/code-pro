@@ -40,7 +40,7 @@ export class MongoDBService {
         logger.info("MongoDB disconnected successfully.")
     }
 
-    public async createRoom(owner: string, roomId: string, dateCreated: Date, programmingLanguage: string = ProgrammingLanguages[ProgrammingLanguages.cpp]) {
+    public async createRoom(owner: string, roomId: string, dateCreated: Date, programmingLanguage: string = ProgrammingLanguages[ProgrammingLanguages.typescript]) {
         const room = new this.Room({
             roomId: roomId,
             owner: owner,

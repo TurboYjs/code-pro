@@ -17,6 +17,7 @@ export default function CodeRoom() {
     const theme = useTheme();
     
     const { state } = useLocation();
+    console.log('state:::', state)
     const [language, setLanguage] = useState(state.language);
     const [participants, setParticipants] = useState<string[]>(state.participants);
     const socket = useContext(SocketContext);
@@ -101,7 +102,7 @@ export default function CodeRoom() {
                 select
                 label="Programming Language"
                 value={language}
-                defaultValue="cpp"
+                defaultValue="typescript"
                 >
                     {supportedLanguages.map((option) => (
                         <MenuItem key={option.value} value={option.value} onClick={() => HandleLanguageChange(option.value)}>
