@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node ./src/server.ts",
-    "deploy": "npm run build && NODE_ENV=production pm2 start ./dist/src/server.js --name code-pro -i max",
+    "deploy": "NODE_ENV=production pm2 start ./dist/src/server.js --name code-pro -i max",
     "build": "npx tsc",
     "start:nodemon": "node ./node_modules/nodemon/bin/nodemon.js",
     "swagger-autogen": "ts-node swagger.ts",

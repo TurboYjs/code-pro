@@ -9,7 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh/
@@ -20,5 +27,7 @@ jobs:
           ssh-keyscan -H ${{ secrets.IP }} >> ~/.ssh/known_hosts
       - name: copy builds to server
         run: |
+          pnpm i
+          pnpm build
           rsync -vrm   ./* ${{ secrets.USER_IP }}:/var/www/code-pro/
-          ssh ${{ secrets.USER_IP }} "cd /var/www/code-pro/ && pnpm install && cd /var/www/code-pro/client && pnpm build && cd /var/www/code-pro/server && pnpm run kill && pnpm run deploy"
+          ssh ${{ secrets.USER_IP }} "cd /var/www/code-pro/ && pnpm install && cd /var/www/code-pro/server && pnpm run kill && pnpm run deploy"
