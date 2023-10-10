@@ -1,0 +1,11 @@
+{
+  "version": "0.0.26",
+  "scripts": {
+    "dev": "pnpm -r start",
+    "build": "pnpm -r build",
+    "release": "bumpp package.json --commit --push --tag --all"
+  },
+  "devDependencies": {
+    "bumpp": "9.1.1"
+  }
+}
