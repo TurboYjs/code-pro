@@ -65,7 +65,7 @@ export const httpServer = createServer(app);
 /**
  * Create a wss (Web Socket Secure) server
  */
-export const wss = new WebSocketServer({server: httpServer})
+export const wss = new WebSocketServer({server: httpServer, path: 'websocket'})
 
 function onError(error: any) {
   logger.info(error);

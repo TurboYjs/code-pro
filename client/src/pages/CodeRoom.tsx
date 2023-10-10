@@ -37,6 +37,7 @@ export default function CodeRoom() {
         const doc = new Y.Doc(); // collection of shared objects
 
         // Connect to peers with Web RTC
+        console.log(serverWsUrl)
         const provider: WebsocketProvider = new WebsocketProvider(serverWsUrl, state.roomId, doc);
         const type = doc.getText("monaco");
 
