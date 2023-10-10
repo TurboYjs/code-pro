@@ -13,7 +13,8 @@ export class SocketIOService {
     constructor(httpServer: HttpServer) {
         this.io = new Server(httpServer, {
             cors: {
-                origin: ['https://code-companion.netlify.app', 'https://guxukai.tech', 'http://localhost:5173']
+                origin: "*",
+                // origin: ['https://code-companion.netlify.app', 'https://guxukai.tech', 'http://localhost:5173']
             }
         });
 
