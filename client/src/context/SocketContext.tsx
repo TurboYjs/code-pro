@@ -1,8 +1,8 @@
 import { createContext } from "react";
 import { Socket, io } from "socket.io-client";
 
-
-const SOCKET_URL = import.meta.env.VITE_SERVER_WS_URL;
+const serverUrl = import.meta.env.VITE_SERVER_URL;
+const SOCKET_URL = new URL(serverUrl).origin;
 
 const socket = io(SOCKET_URL);
 
