@@ -20,7 +20,7 @@ export default function JoinRoomNamePrompt({open, setOpen, roomId}: NamePromptPr
         // add participant and navigate to page
         joinRoom(name, roomId)
         .then((data) => {
-            navigate(`/room/${data.roomId}`, { state: { roomId: data.roomId, dateCreated: data.dateCreated, participants: data.participants, language: data.programmingLanguage } })
+            navigate(`/room/${data.roomId}/${name}`)
         })
     }
     

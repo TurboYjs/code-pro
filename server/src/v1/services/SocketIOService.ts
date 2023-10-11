@@ -20,6 +20,7 @@ export class SocketIOService {
 
         this.io.on('connection', (socket) => {
             logger.info("Connected via socket IO");
+            logger.info( socket.id)
             /**
              * Participant add event
              */
@@ -31,6 +32,7 @@ export class SocketIOService {
              * Language change event
              */
             socket.on('language:change', (data) => {
+                logger.info('language:change', data)
                 socket.broadcast.emit('language:change', data)
             })
         });

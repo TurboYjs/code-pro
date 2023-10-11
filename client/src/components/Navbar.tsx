@@ -23,9 +23,10 @@ export default function Navbar() {
             boxShadow: '0',
          }}>
         <Toolbar>
-          <Typography component={Link} to="/" variant="h6" sx={{ flexGrow: 1, color: theme.palette.primary.contrastText, textDecoration: 'none', }}>
-            code companion
+          <Typography component={Link} to="/" variant="h6" sx={{  color: theme.palette.primary.contrastText, textDecoration: 'none', }}>
+            Home
           </Typography>
+          <Box sx={{flexGrow:1}}/>
           <Clock />
           <Button component={Link} to="/about" color="inherit">About</Button>
           <ThemeSwitch checked={theme.palette.mode === "dark"} onClick={colorMode.toggleColorMode} />

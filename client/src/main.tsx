@@ -7,7 +7,7 @@ import { CssBaseline } from '@mui/material';
 import { SocketProvider } from './context/SocketContext.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <SocketProvider>
     <CustomThemeProvider>
       <CssBaseline />
@@ -16,5 +16,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       </BrowserRouter>
     </CustomThemeProvider>
     </SocketProvider>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 )

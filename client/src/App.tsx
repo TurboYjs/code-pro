@@ -27,7 +27,7 @@ function App() {
     <Routes>
       <Route path="/about" element={<About />} />
       <Route path="/" element={<Home />} />
-      <Route path="/room/:id" element={<CodeRoom />} />
+      <Route path="/room/:roomId/:participant?" element={<CodeRoom />} />
       
     </Routes>
     

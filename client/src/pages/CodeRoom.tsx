@@ -6,27 +6,34 @@ import * as Y from 'yjs';
 import { WebsocketProvider } from 'y-websocket';
 import { MonacoBinding } from 'y-monaco';
 import { editor } from "monaco-editor";
-import { useLocation } from "react-router-dom";
-import { changeLanguage } from "../services/room";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {changeLanguage, getRoomById, joinRoom} from "../services/room";
 import { useContext } from "react";
 import { SocketContext } from "../context/SocketContext";
-
+import {
+    uniqueNamesGenerator,
+    Config,
+    adjectives,
+    names,
+    languages
+} from "unique-names-generator";
+import {pink} from "@mui/material/colors";
 const serverWsUrl = import.meta.env.VITE_SERVER_WS_URL;
 
 export default function CodeRoom() {
     const theme = useTheme();
-    
-    const { state } = useLocation();
-    console.log('state:::', state)
-    const [language, setLanguage] = useState(state.language);
-    const [participants, setParticipants] = useState<string[]>(state.participants);
+    const params = useParams();
+    console.log('params:::', params)
+    const [language, setLanguage] = useState('');
+    const [participant, setParticipant] = useState(params.participant);
+    const [participants, setParticipants] = useState<string[]>([]);
     const socket = useContext(SocketContext);
 
     const HandleLanguageChange = (language: string) => {
         setLanguage(language);
-        changeLanguage(language, state.roomId)
+        changeLanguage(language, params.roomId)
         .then((data) => console.log("Language changed to " + data.programmingLanguage));
-        socket.emit('language:change', {"language": language, "roomId": state.roomId });
+        socket.emit('language:change', {"language": language, "roomId": params.roomId });
     }
 
     const editorRef = useRef<editor.IStandaloneCodeEditor>();
@@ -39,7 +46,7 @@ export default function CodeRoom() {
 
         // Connect to peers with Web RTC
         console.log(serverWsUrl)
-        const provider: WebsocketProvider = new WebsocketProvider(serverWsUrl, state.roomId, doc);
+        const provider: WebsocketProvider = new WebsocketProvider(serverWsUrl, params.roomId, doc);
         const type = doc.getText("monaco");
 
         // Bind yjs doc to Manaco editor
@@ -47,22 +54,51 @@ export default function CodeRoom() {
         console.log(binding, provider);
 
     }
+    const navigate = useNavigate()
 
+    const newString = () => {
+        const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+        const config: Config = {
+            dictionaries: [names],
+            separator: "-",
+            length: 1,
+            style: "capital"
+        };
+
+        const randomString = uniqueNamesGenerator(config);
+
+        return `${randomString}`;
+    };
+    useEffect(()=> {
+        getRoomById(params.roomId).then(data => {
+            setParticipants(data.participants);
+            setLanguage(data.programmingLanguage);
+            console.log('participant:::', participant)
+            if (participant === undefined || participant === '') {
+                const name = newString()
+                joinRoom(name, params.roomId)
+                    .then((data) => {
+                        setParticipant(name)
+                        navigate(`/room/${data.roomId}/${name}`, { replace: true  })
+                    })
+            }
+        })
+    }, [params.roomId])
     useEffect(() => {
       socket.on('participant:add', (data) => {
-        if(data.roomId == state.roomId) {
-            console.log(data);
+        if(data.roomId == params.roomId) {
+            console.log('participant:add', data);
             setParticipants(data.participants);
             setLanguage(data.programmingLanguage);
         }
       })
-
       socket.on('language:change', (data) => {
-        if(data.roomId == state.roomId) {
-            console.log(data);
+          if(data.roomId == params.roomId) {
+            console.log('language:change',data);
             setLanguage(data.language);
         }
-        
+
       })
     
       return () => {
@@ -84,14 +120,7 @@ export default function CodeRoom() {
                 />
             </Grid>
             <Grid item xs={12} md={2} sx={{ padding: '24px' }}>
-                <Typography variant="subtitle1">Room ID: {state.roomId}</Typography>
-                <Typography variant="subtitle1">Date: {new Date(state.dateCreated).toLocaleDateString('en-US', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric',
-                })}</Typography>
+                <Typography variant="subtitle1">Room ID: {params.roomId}</Typography>
                 <TextField 
                 sx={{
                     width: '100%',
@@ -115,7 +144,7 @@ export default function CodeRoom() {
                 {participants.map((p) => (
                     <ListItem key={p} sx={{ paddingLeft: '0' }}>
                         <ListItemAvatar>
-                            <Avatar alt={p}>{ p[0].toUpperCase() }</Avatar>
+                            <Avatar sx={{ bgcolor: participant === p ? pink[500]: '' }}  alt={p}>{ p[0].toUpperCase() }</Avatar>
                         </ListItemAvatar>
                         <ListItemText 
                          primary={p}

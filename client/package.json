@@ -25,7 +25,8 @@
     "y-websocket": "^1.5.0",
     "yjs": "^13.6.7",
     "axios": "1.5.1",
-    "cross-env": "7.0.3"
+    "cross-env": "7.0.3",
+    "unique-names-generator": "4.7.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

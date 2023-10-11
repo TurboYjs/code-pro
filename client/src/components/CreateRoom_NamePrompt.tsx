@@ -20,7 +20,7 @@ export default function CreateRoomNamePrompt({open, setOpen}: NamePromptProps) {
         createRoom(name)
         .then((data) => {
             console.log(data);
-            navigate(`/room/${data.roomId}`, { state: { roomId: data.roomId, dateCreated: data.dateCreated, participants: data.participants, language: data.programmingLanguage  } })
+            navigate(`/room/${data.roomId}/${name}`)
         });
     }
     
