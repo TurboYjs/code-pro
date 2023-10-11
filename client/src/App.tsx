@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import About from "./components/About";
 import CodeRoom from "./pages/CodeRoom";
 import Home from './pages/Home';
+import NotFound from "./pages/NotFound";
 
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
       <Route path="/about" element={<About />} />
       <Route path="/" element={<Home />} />
       <Route path="/room/:roomId/:participant?" element={<CodeRoom />} />
-      
+      <Route path='*' element={<NotFound />}/>
     </Routes>
     
         </Paper>        
