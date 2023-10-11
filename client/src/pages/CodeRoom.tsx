@@ -18,6 +18,8 @@ import {
     languages
 } from "unique-names-generator";
 import {pink} from "@mui/material/colors";
+import PrimaryButton from "../components/ui/PrimaryButton";
+import {codeCompile} from "../services/code";
 const serverWsUrl = import.meta.env.VITE_SERVER_WS_URL;
 
 export default function CodeRoom() {
@@ -25,6 +27,8 @@ export default function CodeRoom() {
     const params = useParams();
     console.log('params:::', params)
     const [language, setLanguage] = useState('');
+    const [inputVal, setInputVal] = useState('');
+    const [outputVal, setOutputVal] = useState('');
     const [participant, setParticipant] = useState(params.participant);
     const [participants, setParticipants] = useState<string[]>([]);
     const socket = useContext(SocketContext);
@@ -106,52 +110,75 @@ export default function CodeRoom() {
       }
     }, [])
     
-    
+    const handleExecute = ()=> {
+        codeCompile(editorRef.current.getValue(), inputVal, language).then(data => {
+            setOutputVal(data)
+        })
+    }
     return (
         <>
         <Grid container>
-            <Grid item xs={12} md={10}>
-                <Editor 
-                height="100vh"
+            <Grid item xs={12} md={8}>
+                <Editor
+                height="80vh"
                 language={language}
                 defaultValue={"// your code here"}
                 theme={theme.palette.mode === "dark" ? "vs-dark" : "vs-light"}
                 onMount={handleEditorDidMount}
                 />
             </Grid>
-            <Grid item xs={12} md={2} sx={{ padding: '24px' }}>
-                <Typography variant="subtitle1">Room ID: {params.roomId}</Typography>
-                <TextField 
-                sx={{
-                    width: '100%',
-                    marginBlock: '4em'
-                }}
-                variant="standard"
-                size="small"
-                select
-                label="Programming Language"
-                value={language}
-                defaultValue="typescript"
-                >
-                    {supportedLanguages.map((option) => (
-                        <MenuItem key={option.value} value={option.value} onClick={() => HandleLanguageChange(option.value)}>
-                            {option.label}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <Typography variant="body1">Participants</Typography>
-                <Container disableGutters sx={{ marginBlock: '1em' }}>
-                {participants.map((p) => (
-                    <ListItem key={p} sx={{ paddingLeft: '0' }}>
-                        <ListItemAvatar>
-                            <Avatar sx={{ bgcolor: participant === p ? pink[500]: '' }}  alt={p}>{ p[0].toUpperCase() }</Avatar>
-                        </ListItemAvatar>
-                        <ListItemText 
-                         primary={p}
-                        />
-                    </ListItem>
-                ))}
-                </Container>
+            <Grid container item xs={12} md={4}>
+                <Grid item xs={12} md={6} sx={{ padding: '24px' }}>
+                    {/*<Typography variant="subtitle1">Room ID: {params.roomId}</Typography>*/}
+                    <TextField
+                        sx={{
+                            width: '100%',
+                            // marginTop: '4em'
+                        }}
+                        variant="standard"
+                        size="small"
+                        select
+                        label="Programming Language"
+                        value={language}
+                        defaultValue="typescript"
+                    >
+                        {supportedLanguages.map((option) => (
+                            <MenuItem key={option.value} value={option.value} onClick={() => HandleLanguageChange(option.value)}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <Typography variant="body1" sx={{marginTop:'4em'}}>Participants</Typography>
+                    <Container disableGutters sx={{ marginBlock: '1em' }}>
+                        {participants.map((p) => (
+                            <ListItem key={p} sx={{ paddingLeft: '0' }}>
+                                <ListItemAvatar>
+                                    <Avatar sx={{ bgcolor: participant === p ? pink[500]: '' }}  alt={p}>{ p[0].toUpperCase() }</Avatar>
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={p}
+                                />
+                            </ListItem>
+                        ))}
+                    </Container>
+                </Grid>
+                <Grid item xs={12} md={6} sx={{ padding: '24px' }}>
+                    <TextField
+                        sx={{
+                            width: '100%',
+                        }}
+                        variant="standard"
+                        size="small"
+                        label="Input"
+                        value={inputVal}
+                        InputLabelProps={{shrink: true}}
+                        onChange={(e) => setInputVal(e.target.value)}
+                    >
+                    </TextField>
+                    <PrimaryButton onClick={handleExecute} size={"small"} sx={{minWidth: '0', width: '100%', marginTop: '4em'}}>Execute</PrimaryButton>
+                    <Typography variant="body1" sx={{ marginTop: '2em'}}>Output</Typography>
+                    <Typography variant="body2" sx={{marginTop: '2em'}}>{outputVal}</Typography>
+                </Grid>
             </Grid>
         </Grid>
         </>

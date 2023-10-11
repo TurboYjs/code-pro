@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express';
 import { mongoDbService } from '../server';
 import { logger } from '../logger';
 import { socketIOService, wss } from '../server';
+import {exec} from "child_process";
 
 export const app_v1 = Router();
 
@@ -62,4 +63,30 @@ app_v1.patch('/room/language', async (req: Request, res: Response) => {
     await mongoDbService.changeLanguage(req.body.programmingLanguage, req.body.roomId);
     const room = await mongoDbService.getRoomById(req.body.roomId);
     res.send(room);
+})
+
+/**
+ * Join a Room
+ */
+app_v1.post('/code/compile', async (req: Request, res: Response) => {
+    // #swagger.description = 'Compile code'
+    if (!req.body.code || !req.body.lang) {
+        return res.send("Cannot read code");
+    }
+    const code = req.body.code
+    const args = req.body.args
+    const lang = req.body.lang
+    switch (lang) {
+        case "typescript":
+            const iife = `(${code})(${args})`
+            exec(`ts-node -p -e '${iife}'`, (err, stdout, stderr) => {
+                if (err) {
+                    console.log("ERROR " + err)
+                    res.send(stderr)
+                }
+
+                console.log("OUTPUT ", stdout)
+                res.send(stdout)
+            })
+    }
 })
