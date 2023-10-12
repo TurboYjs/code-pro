@@ -7,7 +7,7 @@
     "start": "ts-node ./src/server.ts",
     "deploy": "NODE_ENV=production pm2 start ./dist/src/server.js --name code-pro -i max",
     "build": "npx tsc",
-    "start:nodemon": "node ./node_modules/nodemon/bin/nodemon.js",
+    "dev": "node ./node_modules/nodemon/bin/nodemon.js",
     "swagger-autogen": "ts-node swagger.ts",
     "kill": "pm2 delete code-pro"
   },
