@@ -27,8 +27,6 @@ export default function Navbar() {
             Home
           </Typography>
           <Box sx={{flexGrow:1}}/>
-          <Clock />
-          <Button component={Link} to="/about" color="inherit">About</Button>
           <ThemeSwitch checked={theme.palette.mode === "dark"} onClick={colorMode.toggleColorMode} />
         </Toolbar>
       </AppBar>
