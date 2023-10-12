@@ -117,7 +117,7 @@ export default function CodeRoom() {
     }
     return (
         <>
-        <Grid container>
+        <Grid container sx={{height: '100%'}}>
             <Grid item xs={12} md={2} sx={{ padding: '24px' }}>
                 {/*<Typography variant="subtitle1">Room ID: {params.roomId}</Typography>*/}
                 <TextField
@@ -152,9 +152,9 @@ export default function CodeRoom() {
                     ))}
                 </Container>
             </Grid>
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={8} sx={{minHeight: '300px'}}>
                 <Editor
-                height="80vh"
+                    height={'100%'}
                 language={language}
                 defaultValue={"// your code here"}
                 theme={theme.palette.mode === "dark" ? "vs-dark" : "vs-light"}
