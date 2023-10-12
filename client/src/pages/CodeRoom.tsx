@@ -54,7 +54,7 @@ export default function CodeRoom() {
         const type = doc.getText("monaco");
 
         // Bind yjs doc to Manaco editor
-        const binding = new MonacoBinding(type, editorRef.current!.getModel()!, new Set([editorRef.current!]));
+        const binding = new MonacoBinding(type, editor.getModel(), new Set([editor]), provider.awareness);
         console.log(binding, provider);
 
     }
